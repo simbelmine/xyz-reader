@@ -20,19 +20,15 @@
     <style name="Theme.Bacon" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
+        <item name="android:statusBarColor">@color/darkPrimaryColor</item>
+
+        <item name="android:colorPrimary">@color/primaryColor</item>
+        <item name="android:colorPrimaryDark">@color/darkPrimaryColor</item>
+        <item name="android:colorAccent">@color/accentColor</item>
     </style>
 
-    <style name="MyToolbarStyle" parent="ThemeOverlay.AppCompat.ActionBar">
-        <!-- Used to for the title of the Toolbar -->
-        <item name="android:textColorPrimary">@color/accentColor</item>
-        <!-- Used to for the title of the Toolbar when parent is Theme.AppCompat.Light -->
-        <item name="android:textColorPrimaryInverse">@color/primaryColor</item>
-        <!-- Used to color the text of the action menu icons -->
-        <item name="android:textColorSecondary">@color/darkPrimaryColor</item>
-        <!-- Used to color the overflow menu icon -->
-        <item name="actionMenuTextColor">@color/textColor</item>
-        <!-- Color of the Toolbar -->
-        <item name="android:background">@color/primaryColor</item>
+    <style name="Theme.Bacon.Detail">
+        <item name="android:statusBarColor">@color/transparent</item>
     </style>
 
 </resources>
