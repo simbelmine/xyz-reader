@@ -20,9 +20,11 @@
     <color name="lightPrimaryColor">#D7CCC8</color>
     <color name="primaryColor">#795548</color>
     <color name="accentColor">#FFC107</color>
+
     <color name="textColor">#FFFFFF</color>
     <color name="textSecondaryColor">#757575</color>
     <color name="textSecondaryDarkColor">#5D4037</color>
+
     <color name="dividerColor">#BDBDBD</color>
 
     <color name="photo_placeholder">#ccc</color>
