@@ -20,6 +20,7 @@
     <style name="Theme.Bacon" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
+        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
     </style>
 
     <style name="MyToolbarStyle" parent="ThemeOverlay.AppCompat.ActionBar">
@@ -33,6 +34,10 @@
         <item name="actionMenuTextColor">@color/textColor</item>
         <!-- Color of the Toolbar -->
         <item name="android:background">@color/primaryColor</item>
+    </style>
+
+    <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
 </resources>
