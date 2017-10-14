@@ -86,8 +86,8 @@
                 android:layout_marginRight="@dimen/detail_inner_horiz_margin"
                 android:paddingTop="16dp"
                 android:paddingBottom="@dimen/detail_body_bottom_margin"
-                android:textColor="#55000000"
-                android:textColorLink="@color/accentColor"
+                android:textColor="@color/textReading"
+                android:textColorLink="@color/textLinkColor"
                 android:textSize="@dimen/detail_body_text_size"
                 android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier" />
 

@@ -24,11 +24,12 @@
     <color name="textColor">#FFFFFF</color>
     <color name="textSecondaryColor">#757575</color>
     <color name="textSecondaryDarkColor">#5D4037</color>
+    <color name="textReading">#555555</color>
+    <color name="textLinkColor">#3f51b5</color>
 
     <color name="dividerColor">#BDBDBD</color>
 
     <color name="photo_placeholder">#ccc</color>
-    <color name="ltgray">#ffe0e0e0</color>
     <color name="toolbar">#455a64</color>
 
     <color name="transparent">#00000000</color>
