@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.graphics.Palette;
@@ -60,6 +61,7 @@ public class ArticleDetailFragment extends Fragment implements
     private int mScrollY;
     private boolean mIsCard = false;
     private int mStatusBarFullOpacityBottom;
+    private FloatingActionButton mFabButton;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -125,7 +127,19 @@ public class ArticleDetailFragment extends Fragment implements
             }
         });
 
+        mFabButton = (FloatingActionButton) mRootView.findViewById(R.id.share_fab);
         mScrollView = (NestedScrollView) mRootView.findViewById(R.id.scrollview);
+        mScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > oldScrollY) {
+                    mFabButton.hide();
+                } else {
+                    mFabButton.show();
+                }
+            }
+        });
+
 //        mScrollView.setCallbacks(new ObservableScrollView.Callbacks() {
 //            @Override
 //            public void onScrollChanged() {
@@ -140,7 +154,7 @@ public class ArticleDetailFragment extends Fragment implements
 
         mStatusBarColorDrawable = new ColorDrawable(0);
 
-        mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
+        mFabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
@@ -232,7 +246,12 @@ public class ArticleDetailFragment extends Fragment implements
                                 + "</font>"));
 
             }
-            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />"), Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
+            }
+
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
                         @Override

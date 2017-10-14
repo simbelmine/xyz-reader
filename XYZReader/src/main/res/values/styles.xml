@@ -40,4 +40,7 @@
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
+    <style name="MyFloatingButton" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/accentColor</item>
+    </style>
 </resources>
