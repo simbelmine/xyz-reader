@@ -27,9 +27,12 @@
     <color name="textReading">#555555</color>
     <color name="textLinkColor">#3f51b5</color>
 
+    <color name="textDetailTitle">#FFFFFF</color>
+    <color name="textDetailByline">#8FFF</color>
+
     <color name="dividerColor">#BDBDBD</color>
 
-    <color name="photo_placeholder">#ccc</color>
+    <color name="photo_placeholder">#CCC</color>
     <color name="toolbar">#455a64</color>
 
     <color name="transparent">#00000000</color>
