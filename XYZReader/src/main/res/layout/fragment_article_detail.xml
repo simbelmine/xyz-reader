@@ -65,24 +65,7 @@
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/share_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fabSize="auto"
-        app:layout_anchorGravity="bottom|right|end"
-        app:layout_anchor="@id/meta_bar"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_share"
-        android:theme="@style/MyFloatingButton" />
-
     <!--<include layout="@layout/content_scrolling" />-->
-
-    <com.example.xyzreader.ui.DrawInsetsFrameLayout
-        android:id="@+id/draw_insets_frame_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </com.example.xyzreader.ui.DrawInsetsFrameLayout>
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -104,5 +87,16 @@
             android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier" />
 
     </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/share_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="auto"
+        app:layout_anchorGravity="bottom|right|end"
+        app:layout_anchor="@id/app_bar"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_share"
+        android:theme="@style/MyFloatingButton" />
 
 </android.support.design.widget.CoordinatorLayout>
