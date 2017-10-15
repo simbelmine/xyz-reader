@@ -24,11 +24,13 @@ import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -62,6 +64,7 @@ public class ArticleDetailFragment extends Fragment implements
     private boolean mIsCard = false;
     private int mStatusBarFullOpacityBottom;
     private FloatingActionButton mFabButton;
+    private LinearLayout mTitleContainer;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -115,7 +118,7 @@ public class ArticleDetailFragment extends Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
 
         mDrawInsetsFrameLayout = (DrawInsetsFrameLayout)
@@ -127,6 +130,8 @@ public class ArticleDetailFragment extends Fragment implements
             }
         });
 
+        mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
+        mTitleContainer = (LinearLayout) mRootView.findViewById(R.id.meta_bar);
         mFabButton = (FloatingActionButton) mRootView.findViewById(R.id.share_fab);
         mScrollView = (NestedScrollView) mRootView.findViewById(R.id.scrollview);
         mScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
@@ -136,6 +141,20 @@ public class ArticleDetailFragment extends Fragment implements
                     mFabButton.hide();
                 } else {
                     mFabButton.show();
+                }
+
+                if (scrollY > 0) {
+                    mTitleContainer.setPadding(
+                            (int)getResources().getDimension(R.dimen.detail_inner_horiz_margin),
+                            (int)getResources().getDimension(R.dimen.status_bar_padding),
+                            (int)getResources().getDimension(R.dimen.detail_inner_horiz_margin),
+                            (int)getResources().getDimension(R.dimen.standard_padding));
+                } else {
+                    mTitleContainer.setPadding(
+                            (int) getResources().getDimension(R.dimen.detail_inner_horiz_margin),
+                            (int) getResources().getDimension(R.dimen.standard_padding),
+                            (int) getResources().getDimension(R.dimen.detail_inner_horiz_margin),
+                            (int) getResources().getDimension(R.dimen.standard_padding));
                 }
             }
         });
@@ -149,8 +168,6 @@ public class ArticleDetailFragment extends Fragment implements
 //                updateStatusBar();
 //            }
 //        });
-
-        mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
 
         mStatusBarColorDrawable = new ColorDrawable(0);
 
@@ -167,6 +184,11 @@ public class ArticleDetailFragment extends Fragment implements
         bindViews();
         updateStatusBar();
         return mRootView;
+    }
+
+    private int convertDpToPx(int dp){
+        return Math.round(dp*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
+
     }
 
     private void updateStatusBar() {
@@ -242,7 +264,7 @@ public class ArticleDetailFragment extends Fragment implements
                 // If date is before 1902, just show the string
                 bylineView.setText(Html.fromHtml(
                         outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
-                        + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                                + mCursor.getString(ArticleLoader.Query.AUTHOR)
                                 + "</font>"));
 
             }

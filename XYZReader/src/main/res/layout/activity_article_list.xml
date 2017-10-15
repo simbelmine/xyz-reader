@@ -16,26 +16,27 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:scrollbarStyle="outsideOverlay"
             android:paddingLeft="@dimen/list_side_margin"
             android:paddingRight="@dimen/list_side_margin"
-            android:paddingBottom="28dp"
-            android:paddingTop="?attr/actionBarSize"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            android:paddingBottom="@dimen/rv_bottom_padding"
+            android:paddingTop="@dimen/rv_status_bar_plus_action_bar_top_padding"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+        >
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             style="@style/MyToolbarStyle"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:paddingTop="24dp">
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
