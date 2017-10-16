@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +57,8 @@ public class ArticleDetailFragment extends Fragment implements
     private ImageView mPhotoView;
     private FloatingActionButton mFabButton;
     private LinearLayout mTitleContainer;
+    private String mTitle;
+    private Spanned mByline;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -118,18 +122,12 @@ public class ArticleDetailFragment extends Fragment implements
                     mFabButton.show();
                 }
 
-                if (scrollY > 0) {
-                    mTitleContainer.setPadding(
-                            (int)getResources().getDimension(R.dimen.detail_inner_horiz_margin),
-                            (int)getResources().getDimension(R.dimen.status_bar_padding),
-                            (int)getResources().getDimension(R.dimen.detail_inner_horiz_margin),
-                            (int)getResources().getDimension(R.dimen.standard_padding));
-                } else {
-                    mTitleContainer.setPadding(
-                            (int) getResources().getDimension(R.dimen.detail_inner_horiz_margin),
-                            (int) getResources().getDimension(R.dimen.standard_padding),
-                            (int) getResources().getDimension(R.dimen.detail_inner_horiz_margin),
-                            (int) getResources().getDimension(R.dimen.standard_padding));
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    if (scrollY > 0) {
+                        ((TextView)mRootView.findViewById(R.id.article_title)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.list_item_title_text_size));
+                    } else {
+                        ((TextView)mRootView.findViewById(R.id.article_title)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.detail_title_text_size));
+                    }
                 }
             }
         });
@@ -173,26 +171,28 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
             mRootView.animate().alpha(1);
-            titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
+            mTitle = mCursor.getString(ArticleLoader.Query.TITLE);
+            titleView.setText(mTitle);
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
-                bylineView.setText(Html.fromHtml(
+                mByline = Html.fromHtml(
                         DateUtils.getRelativeTimeSpanString(
                                 publishedDate.getTime(),
                                 System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
                                 DateUtils.FORMAT_ABBREV_ALL).toString()
                                 + " by <font color='#ffffff'>"
                                 + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                                + "</font>"));
+                                + "</font>");
 
             } else {
                 // If date is before 1902, just show the string
-                bylineView.setText(Html.fromHtml(
+                mByline = Html.fromHtml(
                         outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
                                 + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                                + "</font>"));
+                                + "</font>");
 
             }
+            bylineView.setText(mByline);
 
             Spanned spannedHtml;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -213,6 +213,8 @@ public class ArticleDetailFragment extends Fragment implements
                                 mMutedColor = p.getDarkMutedColor(0xFF333333);
                                 mPhotoView.setImageBitmap(imageContainer.getBitmap());
                                 mRootView.findViewById(R.id.meta_bar)
+                                        .setBackgroundColor(mMutedColor);
+                                mRootView.findViewById(R.id.app_bar)
                                         .setBackgroundColor(mMutedColor);
                             }
                         }

@@ -24,7 +24,7 @@
             <ImageView
                 android:id="@+id/photo"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/details_photo_height"
+                android:layout_height="150dp"
                 android:background="@color/primaryColor"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"

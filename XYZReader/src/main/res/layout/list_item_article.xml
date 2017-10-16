@@ -24,7 +24,6 @@
 
         <TextView
             android:id="@+id/article_title"
-            style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="16dp"
@@ -33,18 +32,19 @@
             android:paddingBottom="4dp"
             android:textColor="@color/textSecondaryDarkColor"
             android:fontFamily="sans-serif-condensed"
+            android:textSize="@dimen/list_item_title_text_size"
             android:ellipsize="end"
             android:maxLines="4" />
 
         <TextView
             android:id="@+id/article_subtitle"
-            style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="16dp"
             android:textColor="@color/textSecondaryColor"
+            android:textSize="@dimen/list_item_byline_text_size"
             android:maxLines="2"
             android:ellipsize="end" />
     </LinearLayout>

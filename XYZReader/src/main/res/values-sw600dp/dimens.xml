@@ -1,10 +1,17 @@
 <resources>
     <!-- detail -->
-    <dimen name="detail_title_text_size">42sp</dimen>
-    <dimen name="detail_body_text_size">20sp</dimen>
+    <dimen name="detail_title_text_size">44sp</dimen>
+    <dimen name="detail_byline_text_size">18sp</dimen>
+    <dimen name="detail_body_text_size">24sp</dimen>
     <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.3</item>
+
+    <dimen name="list_item_title_text_size">32sp</dimen>
+    <dimen name="list_item_byline_text_size">18sp</dimen>
+
     <dimen name="fab_margin">24dp</dimen>
 
     <dimen name="standard_margin">24dp</dimen>
     <dimen name="standard_padding">24dp</dimen>
+
+    <dimen name="details_photo_height">300dp</dimen>
 </resources>
