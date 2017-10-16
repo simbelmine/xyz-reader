@@ -1,3 +1,5 @@
 <resources>
     <dimen name="standard_padding">56dp</dimen>
+
+    <dimen name="card_height">100dp</dimen>
 </resources>

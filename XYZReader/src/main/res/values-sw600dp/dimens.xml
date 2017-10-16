@@ -14,4 +14,6 @@
     <dimen name="standard_padding">24dp</dimen>
 
     <dimen name="details_photo_height">300dp</dimen>
+
+    <dimen name="card_height">80dp</dimen>
 </resources>
