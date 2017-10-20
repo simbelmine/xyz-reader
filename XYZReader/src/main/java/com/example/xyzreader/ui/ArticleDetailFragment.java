@@ -56,7 +56,6 @@ public class ArticleDetailFragment extends Fragment implements
     private NestedScrollView mScrollView;
     private ImageView mPhotoView;
     private FloatingActionButton mFabButton;
-    private LinearLayout mTitleContainer;
     private String mTitle;
     private Spanned mByline;
 
@@ -110,7 +109,6 @@ public class ArticleDetailFragment extends Fragment implements
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
-        mTitleContainer = (LinearLayout) mRootView.findViewById(R.id.meta_bar);
         mFabButton = (FloatingActionButton) mRootView.findViewById(R.id.share_fab);
         mScrollView = (NestedScrollView) mRootView.findViewById(R.id.scrollview);
         mScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
