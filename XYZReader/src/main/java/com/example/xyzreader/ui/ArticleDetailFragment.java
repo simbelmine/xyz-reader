@@ -143,10 +143,6 @@ public class ArticleDetailFragment extends Fragment implements
             }
         });
 
-        bodyView = (WebView) mRootView.findViewById(R.id.article_body_web_view);
-
-        if (savedInstanceState != null)
-            bodyView.restoreState(savedInstanceState);
 
         bindViews();
         isDelayedLoading = true;
@@ -172,6 +168,7 @@ public class ArticleDetailFragment extends Fragment implements
         TextView titleView = (TextView) mRootView.findViewById(R.id.article_title);
         TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
+        bodyView = (WebView) mRootView.findViewById(R.id.article_body_web_view);
 
         if (mCursor != null) {
             mRootView.setAlpha(0);
@@ -266,7 +263,6 @@ public class ArticleDetailFragment extends Fragment implements
     AsyncTask<Void, Void, String> loadBodyTextTask = new AsyncTask<Void, Void, String>() {
         @Override
         protected String doInBackground(Void... params) {
-            Log.v("xyz", "doInBackground ... ");
             return mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br>");
         }
 
@@ -275,7 +271,6 @@ public class ArticleDetailFragment extends Fragment implements
             String htmlString = getStyledHtmlString(spanned);
             int px = (int) (getResources().getDimension(R.dimen.detail_body_text_size) / getResources().getDisplayMetrics().density);
 
-            Log.v("xyz", "postExecute ...    " + bodyView);
             if(bodyView == null) {
                 return;
             }
