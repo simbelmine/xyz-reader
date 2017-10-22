@@ -72,19 +72,17 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:paddingLeft="@dimen/standard_padding"
         android:paddingRight="@dimen/standard_padding"
+        android:background="#ffffff"
         android:id="@+id/scrollview">
 
-        <TextView
-            android:id="@+id/article_body"
+        <WebView
+            android:id="@+id/article_body_web_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/detail_body_top_padding"
-            android:paddingBottom="@dimen/detail_body_bottom_margin"
-            android:textColor="@color/textReading"
-            android:textColorLink="@color/textLinkColor"
-            android:textSize="@dimen/detail_body_text_size"
-            android:gravity="fill_horizontal"
-            android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier" />
+            android:layout_marginTop="@dimen/detail_body_top_padding"
+            android:layout_marginBottom="@dimen/detail_body_bottom_margin"
+            android:background="#ffffff"
+            android:gravity="fill_horizontal" />
 
     </android.support.v4.widget.NestedScrollView>
 

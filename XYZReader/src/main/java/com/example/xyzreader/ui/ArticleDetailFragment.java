@@ -7,14 +7,14 @@ import android.content.Loader;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
@@ -23,8 +23,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -64,6 +64,9 @@ public class ArticleDetailFragment extends Fragment implements
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
     // Most time functions can only handle 1902 - 2037
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
+
+    private boolean isDelayedLoading = false;
+    private WebView bodyView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -140,7 +143,13 @@ public class ArticleDetailFragment extends Fragment implements
             }
         });
 
+        bodyView = (WebView) mRootView.findViewById(R.id.article_body_web_view);
+
+        if (savedInstanceState != null)
+            bodyView.restoreState(savedInstanceState);
+
         bindViews();
+        isDelayedLoading = true;
         return mRootView;
     }
 
@@ -156,14 +165,13 @@ public class ArticleDetailFragment extends Fragment implements
     }
 
     private void bindViews() {
-        if (mRootView == null) {
+         if (mRootView == null) {
             return;
         }
 
         TextView titleView = (TextView) mRootView.findViewById(R.id.article_title);
         TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
-        TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
 
         if (mCursor != null) {
             mRootView.setAlpha(0);
@@ -192,14 +200,9 @@ public class ArticleDetailFragment extends Fragment implements
             }
             bylineView.setText(mByline);
 
-            Spanned spannedHtml;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                spannedHtml = Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />"), Html.FROM_HTML_MODE_LEGACY);
-            } else {
-                spannedHtml = Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />"));
+            if(isDelayedLoading) {
+                loadBodyTextTask.execute();
             }
-            Spannable spannableHtml = new SpannableString(spannedHtml);
-            bodyView.setText(spannableHtml, TextView.BufferType.SPANNABLE);
 
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
@@ -226,7 +229,7 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setVisibility(View.INVISIBLE);
             titleView.setText("N/A");
             bylineView.setText("N/A" );
-            bodyView.setText("N/A");
+           // bodyView.setText("N/A");
         }
     }
 
@@ -258,5 +261,33 @@ public class ArticleDetailFragment extends Fragment implements
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         mCursor = null;
         bindViews();
+    }
+
+    AsyncTask<Void, Void, String> loadBodyTextTask = new AsyncTask<Void, Void, String>() {
+        @Override
+        protected String doInBackground(Void... params) {
+            Log.v("xyz", "doInBackground ... ");
+            return mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br>");
+        }
+
+        @Override
+        protected void onPostExecute(String spanned) {
+            String htmlString = getStyledHtmlString(spanned);
+            int px = (int) (getResources().getDimension(R.dimen.detail_body_text_size) / getResources().getDisplayMetrics().density);
+
+            Log.v("xyz", "postExecute ...    " + bodyView);
+            if(bodyView == null) {
+                return;
+            }
+            bodyView.getSettings().setJavaScriptEnabled(true);
+            bodyView.getSettings().setDefaultFontSize(px);
+            bodyView.getSettings().setStandardFontFamily("sans-serif");
+            bodyView.loadData(htmlString, "text/html", "UTF-8");
+        }
+    };
+
+    private String getStyledHtmlString(String str) {
+        String color = "#" + (Integer.toHexString(ContextCompat.getColor(getActivity(), R.color.textReading)).substring(2));
+        return "<html><body><font color=\"" + color + "\">" + str + "</font></body></html>";
     }
 }
