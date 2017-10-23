@@ -75,6 +75,20 @@
         android:background="#ffffff"
         android:id="@+id/scrollview">
 
+        <FrameLayout
+            android:id="@+id/article_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:id="@+id/article_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:visibility="invisible"
+                android:indeterminate="true"
+                android:indeterminateTintMode="src_atop"
+                android:indeterminateTint="@color/accentColor"
+                style="?android:attr/progressBarStyleHorizontal"/>
         <WebView
             android:id="@+id/article_body_web_view"
             android:layout_width="match_parent"
@@ -83,6 +97,7 @@
             android:layout_marginBottom="@dimen/detail_body_bottom_margin"
             android:background="#ffffff"
             />
+        </FrameLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

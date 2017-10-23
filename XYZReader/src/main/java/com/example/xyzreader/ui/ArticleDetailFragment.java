@@ -24,9 +24,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -68,8 +70,9 @@ public class ArticleDetailFragment extends Fragment implements
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
 
     private boolean isDelayedLoading = false;
-    private WebView bodyView;
-    private int position = 0;
+    private WebView mBodyView;
+    private ProgressBar mArticleProgress;
+    private int mPosition = 0;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -146,10 +149,13 @@ public class ArticleDetailFragment extends Fragment implements
             }
         });
 
-        bodyView = (WebView) mRootView.findViewById(R.id.article_body_web_view);
+        mBodyView = (WebView) mRootView.findViewById(R.id.article_body_web_view);
+        mArticleProgress = (ProgressBar) mRootView.findViewById(R.id.article_progress);
+
+        setArticleProgress();
 
         if (savedInstanceState != null) {
-            position = savedInstanceState.getInt("ARTICLE_SCROLL_POSITION");
+            mPosition = savedInstanceState.getInt("ARTICLE_SCROLL_POSITION");
         }
 
         bindViews();
@@ -242,7 +248,7 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setVisibility(View.INVISIBLE);
             titleView.setText("N/A");
             bylineView.setText("N/A" );
-            // bodyView.setText("N/A");
+            // mBodyView.setText("N/A");
         }
     }
 
@@ -287,34 +293,50 @@ public class ArticleDetailFragment extends Fragment implements
             String htmlString = getStyledHtmlString(spanned);
             int px = (int) (getResources().getDimension(R.dimen.detail_body_text_size) / getResources().getDisplayMetrics().density);
 
-            if(bodyView == null) {
+            if(mBodyView == null) {
                 return;
             }
-            bodyView.getSettings().setJavaScriptEnabled(true);
-            bodyView.getSettings().setDefaultFontSize(px);
-            bodyView.getSettings().setStandardFontFamily("sans-serif");
-            bodyView.loadData(htmlString, "text/html", "UTF-8");
+            mBodyView.getSettings().setJavaScriptEnabled(true);
+            mBodyView.getSettings().setDefaultFontSize(px);
+            mBodyView.getSettings().setStandardFontFamily("sans-serif");
+            mBodyView.loadData(htmlString, "text/html", "UTF-8");
 
             scrollArticleBodyToPosition();
         }
     };
 
     private void scrollArticleBodyToPosition() {
-        bodyView.setWebViewClient(new WebViewClient() {
+        mBodyView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        final int scrollViewHeight = bodyView.getHeight();
+                        final int scrollViewHeight = mBodyView.getHeight();
                         if (scrollViewHeight > 0) {
                             mScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                            if (position != 0) {
-                                mScrollView.smoothScrollTo(0, (position * mScrollView.getMaxScrollAmount()));
+                            if (mPosition != 0) {
+                                mScrollView.smoothScrollTo(0, (mPosition * mScrollView.getMaxScrollAmount()));
                             }
                         }
                     }
                 });
+            }
+        });
+    }
+
+    private void setArticleProgress() {
+        mBodyView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int progress) {
+                if(progress < 100 && mArticleProgress.getVisibility() == ProgressBar.INVISIBLE){
+                    mArticleProgress.setVisibility(ProgressBar.VISIBLE);
+                }
+
+                mArticleProgress.setProgress(progress);
+                if(progress == 100) {
+                    mArticleProgress.setVisibility(ProgressBar.INVISIBLE);
+                }
             }
         });
     }
