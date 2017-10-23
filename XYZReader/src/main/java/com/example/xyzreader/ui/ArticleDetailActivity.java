@@ -35,7 +35,7 @@ public class ArticleDetailActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DisplayUtils.useImmersiveStickyFullsreenMode(getWindow());
+        DisplayUtils.useImmersiveStickyFullscreenMode(getWindow());
 
         setContentView(R.layout.activity_article_detail);
 

@@ -9,4 +9,7 @@
 
     <string name="up">Up</string>
 
+    <string name="check_internet_connection">Did you check your Network?</string>
+    <string name="internet_connection_action">Open Settings</string>
+
 </resources>

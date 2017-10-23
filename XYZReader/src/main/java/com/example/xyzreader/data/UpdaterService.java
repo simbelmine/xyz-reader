@@ -3,6 +3,7 @@ package com.example.xyzreader.data;
 import android.app.IntentService;
 import android.content.ContentProviderOperation;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.net.ConnectivityManager;
@@ -28,8 +29,16 @@ public class UpdaterService extends IntentService {
     public static final String EXTRA_REFRESHING
             = "com.example.xyzreader.intent.extra.REFRESHING";
 
+    public static Context UPDATE_SERVICE_CONTEXT = null;
+
     public UpdaterService() {
         super(TAG);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        UPDATE_SERVICE_CONTEXT = this;
     }
 
     @Override
@@ -55,9 +64,10 @@ public class UpdaterService extends IntentService {
         cpo.add(ContentProviderOperation.newDelete(dirUri).build());
 
         try {
+            Log.e("xyz", "OnHandle Intent");
             JSONArray array = RemoteEndpointUtil.fetchJsonArray();
             if (array == null) {
-                throw new JSONException("Invalid parsed item array" );
+                return;
             }
 
             for (int i = 0; i < array.length(); i++) {

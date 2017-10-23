@@ -22,7 +22,13 @@ public class RemoteEndpointUtil {
     public static JSONArray fetchJsonArray() {
         String itemsJson = null;
         try {
-            itemsJson = fetchPlainText(Config.BASE_URL);
+            Log.e("xyz", "fetch JSON");
+            URL url = Config.BASE_URL;
+            if (url == null) {
+                return null;
+            }
+
+            itemsJson = fetchPlainText(url);
         } catch (IOException e) {
             Log.e(TAG, "Error fetching items JSON", e);
             return null;
@@ -30,6 +36,9 @@ public class RemoteEndpointUtil {
 
         // Parse JSON
         try {
+            if (itemsJson == null) {
+                return null;
+            }
             JSONTokener tokener = new JSONTokener(itemsJson);
             Object val = tokener.nextValue();
             if (!(val instanceof JSONArray)) {
