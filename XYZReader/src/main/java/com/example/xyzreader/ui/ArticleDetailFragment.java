@@ -23,7 +23,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -67,6 +69,7 @@ public class ArticleDetailFragment extends Fragment implements
 
     private boolean isDelayedLoading = false;
     private WebView bodyView;
+    private int position = 0;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -143,10 +146,24 @@ public class ArticleDetailFragment extends Fragment implements
             }
         });
 
+        bodyView = (WebView) mRootView.findViewById(R.id.article_body_web_view);
+
+        if (savedInstanceState != null) {
+            position = savedInstanceState.getInt("ARTICLE_SCROLL_POSITION");
+        }
 
         bindViews();
         isDelayedLoading = true;
         return mRootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (mScrollView.getScrollY() != 0) {
+            outState.putInt("ARTICLE_SCROLL_POSITION", mScrollView.getScrollY()/ mScrollView.getMaxScrollAmount());
+        }
     }
 
     private Date parsePublishedDate() {
@@ -161,14 +178,13 @@ public class ArticleDetailFragment extends Fragment implements
     }
 
     private void bindViews() {
-         if (mRootView == null) {
+        if (mRootView == null) {
             return;
         }
 
         TextView titleView = (TextView) mRootView.findViewById(R.id.article_title);
         TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
-        bodyView = (WebView) mRootView.findViewById(R.id.article_body_web_view);
 
         if (mCursor != null) {
             mRootView.setAlpha(0);
@@ -226,7 +242,7 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setVisibility(View.INVISIBLE);
             titleView.setText("N/A");
             bylineView.setText("N/A" );
-           // bodyView.setText("N/A");
+            // bodyView.setText("N/A");
         }
     }
 
@@ -278,8 +294,30 @@ public class ArticleDetailFragment extends Fragment implements
             bodyView.getSettings().setDefaultFontSize(px);
             bodyView.getSettings().setStandardFontFamily("sans-serif");
             bodyView.loadData(htmlString, "text/html", "UTF-8");
+
+            scrollArticleBodyToPosition();
         }
     };
+
+    private void scrollArticleBodyToPosition() {
+        bodyView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        final int scrollViewHeight = bodyView.getHeight();
+                        if (scrollViewHeight > 0) {
+                            mScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            if (position != 0) {
+                                mScrollView.smoothScrollTo(0, (position * mScrollView.getMaxScrollAmount()));
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
 
     private String getStyledHtmlString(String str) {
         String color = "#" + (Integer.toHexString(ContextCompat.getColor(getActivity(), R.color.textReading)).substring(2));

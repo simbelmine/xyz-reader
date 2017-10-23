@@ -82,7 +82,7 @@
             android:layout_marginTop="@dimen/detail_body_top_padding"
             android:layout_marginBottom="@dimen/detail_body_bottom_margin"
             android:background="#ffffff"
-            android:gravity="fill_horizontal" />
+            />
 
     </android.support.v4.widget.NestedScrollView>
 
