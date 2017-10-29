@@ -24,4 +24,6 @@
 
     <dimen name="card_height">50dp</dimen>
 
+    <dimen name="app_bar_elevation">4dp</dimen>
+
 </resources>
