@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -37,6 +38,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import static android.support.v7.widget.StaggeredGridLayoutManager.VERTICAL;
 
 /**
  * An activity representing a list of Articles. This activity has different presentations for
@@ -119,8 +122,8 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             int columnCount = getResources().getInteger(R.integer.list_column_count);
-            GridLayoutManager sglm =
-                    new GridLayoutManager(this, GridLayoutManager.VERTICAL);
+            StaggeredGridLayoutManager sglm =
+                    new StaggeredGridLayoutManager(columnCount, VERTICAL);
             sglm.setSpanCount(columnCount);
             mRecyclerView.setLayoutManager(sglm);
         } else {
