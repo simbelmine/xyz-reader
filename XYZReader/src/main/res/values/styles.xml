@@ -36,8 +36,6 @@
         <item name="android:textColorSecondary">@color/darkPrimaryColor</item>
         <!-- Used to color the overflow menu icon -->
         <item name="actionMenuTextColor">@color/textColor</item>
-        <!-- Color of the Toolbar -->
-        <item name="android:background">@color/primaryColor</item>
     </style>
 
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
