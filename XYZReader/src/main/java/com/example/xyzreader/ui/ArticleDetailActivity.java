@@ -28,11 +28,11 @@ public class ArticleDetailActivity extends AppCompatActivity
     private long mStartId;
 
     private long mSelectedItemId;
+    private int mSelectedItemPosition;
 
     private ViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
     private View mUpButton;
-    private ParallaxPageTransformer mParalaxTransformer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +63,9 @@ public class ArticleDetailActivity extends AppCompatActivity
                 mSelectedItemId = mStartId;
             }
         }
+        if (getIntent().getExtras() != null) {
+            mSelectedItemPosition = getIntent().getExtras().getInt(ArticleListActivity.ARTICLE_POSITION, 0);
+        }
     }
 
     @Override
@@ -73,6 +76,7 @@ public class ArticleDetailActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         mPagerAdapter.swapCursor(cursor);
+        mPager.setCurrentItem(mSelectedItemPosition, false);
     }
 
     @Override
