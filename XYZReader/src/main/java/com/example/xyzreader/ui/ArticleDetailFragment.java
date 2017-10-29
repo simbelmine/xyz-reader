@@ -35,6 +35,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
+import com.example.xyzreader.utils.ParallaxPageTransformer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -345,6 +346,7 @@ public class ArticleDetailFragment extends Fragment implements
     }
 
     private String getStyledHtmlString(String str) {
+        if (str == null || getActivity() == null) return "";
         String color = "#" + (Integer.toHexString(ContextCompat.getColor(getActivity(), R.color.textReading)).substring(2));
         return "<html><body><font color=\"" + color + "\">" + str + "</font></body></html>";
     }

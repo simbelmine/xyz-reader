@@ -16,6 +16,7 @@ import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
 import com.example.xyzreader.utils.DisplayUtils;
+import com.example.xyzreader.utils.ParallaxPageTransformer;
 
 /**
  * An activity representing a single Article detail screen, letting you swipe between articles.
@@ -31,6 +32,7 @@ public class ArticleDetailActivity extends AppCompatActivity
     private ViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
     private View mUpButton;
+    private ParallaxPageTransformer mParalaxTransformer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,8 @@ public class ArticleDetailActivity extends AppCompatActivity
         mPagerAdapter = new MyPagerAdapter(getFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
+
+        mPager.setPageTransformer(false, new ParallaxPageTransformer());
 
         mUpButton = findViewById(R.id.action_up);
         mUpButton.setOnClickListener(new View.OnClickListener() {
