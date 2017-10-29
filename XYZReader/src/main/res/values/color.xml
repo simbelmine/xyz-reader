@@ -16,14 +16,14 @@
 -->
 
 <resources>
-    <color name="darkPrimaryColor">#5D4037</color>
-    <color name="lightPrimaryColor">#D7CCC8</color>
-    <color name="primaryColor">#795548</color>
-    <color name="accentColor">#FFC107</color>
+    <color name="darkPrimaryColor">#212121</color>
+    <color name="lightPrimaryColor">#F5F5F5</color>
+    <color name="primaryColor">#525E54</color>
+    <color name="accentColor">#0DBCCF</color>
 
     <color name="textColor">#FFFFFF</color>
     <color name="textSecondaryColor">#757575</color>
-    <color name="textSecondaryDarkColor">#5D4037</color>
+    <color name="textSecondaryDarkColor">#212121</color>
     <color name="textReading">#555555</color>
     <color name="textLinkColor">#3f51b5</color>
 
